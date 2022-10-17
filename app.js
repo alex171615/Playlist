@@ -107,11 +107,6 @@ app.get('/lists/:nombre/canciones', (pedido, respuesta) => {
     }
 })
 
-
-//Añadir una nueva canción a una lista de reproducción existente. 
-//Si el nombre de la canción no es válido (ej: null) 
-//debe devolver un error “400 Bad Request” Si la lista no existe, debe devolver un “404 Not Found”
-
 app.post('/lists/:nombre/canciones', (pedido, respuesta) => {
     let nombre = pedido.params.nombre
     let listaCanciones = playlist.filter(x => x.nombre == nombre).at(0)
@@ -135,8 +130,37 @@ app.post('/lists/:nombre/canciones', (pedido, respuesta) => {
 
 
     app.put('/lists/:nombre/canciones/:titulo', (pedido,respuesta) => {
+        let nombre = pedido.params.nombre;
+        let titulo = pedido.params.titulo;
+        if ((coleccion.some(x => x.nombre == nombre)) == true) {
+
+            let album = coleccion.filter(x => x.nombre == nombre).at(0)
+    
+            if ((album.canciones.some(x => x.titulo == titulo)) == true) {
+    
+                if (pedido.body.titulo == titulo) {
+    
+                    let iColeccion = coleccion.indexOf(album)
+                    var iCancion = 0;
+                    playlist[iColeccion].canciones.forEach((element, i) => {
+                    if (element.titulo == titulo) {
+                        iCancion = i;
+                    }
+                    })
+                    coleccion[iColeccion].canciones[iCancion].artista = pedido.body.artista;
+                    coleccion[iColeccion].canciones[iCancion].año = pedido.body.año;
+                    coleccion[iColeccion].canciones[iCancion].album = pedido.body.album;
+                }
+                else respuesta.status(404, "No Found").send()
+            }
+            else respuesta.status(404, "No Found").send()
+        }
+        else respuesta.status(404, "No Found").send()
+        respuesta.send()
 
     })
+    
+
 
 
 
