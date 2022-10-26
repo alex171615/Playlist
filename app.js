@@ -87,11 +87,7 @@ app.delete('/lists/:nombre', (pedido, respuesta) => {
 
 
 
-
-
-
-
-//2
+//p.2
 
 app.get('/lists/:nombre/canciones', (pedido, respuesta) => {
     let nombre = pedido.params.nombre
