@@ -129,40 +129,62 @@ app.post('/lists/:nombre/canciones', (pedido, respuesta) => {
     }
 
 
-    app.put('/lists/:nombre/canciones/:titulo', (pedido,respuesta) => {
-        let nombre = pedido.params.nombre;
-        let titulo = pedido.params.titulo;
-        if ((coleccion.some(x => x.nombre == nombre)) == true) {
-
-            let album = coleccion.filter(x => x.nombre == nombre).at(0)
-    
-            if ((album.canciones.some(x => x.titulo == titulo)) == true) {
-    
-                if (pedido.body.titulo == titulo) {
-    
-                    let iColeccion = coleccion.indexOf(album)
-                    var iCancion = 0;
-                    playlist[iColeccion].canciones.forEach((element, i) => {
-                    if (element.titulo == titulo) {
-                        iCancion = i;
-                    }
-                    })
-                    coleccion[iColeccion].canciones[iCancion].artista = pedido.body.artista;
-                    coleccion[iColeccion].canciones[iCancion].año = pedido.body.año;
-                    coleccion[iColeccion].canciones[iCancion].album = pedido.body.album;
-                }
-                else respuesta.status(404, "No Found").send()
+    app.put('/playlists/:nombre/canciones/:titulo', (pedido, respuesta) => {
+        let name = pedido.params.nombre
+        let titulo = pedido.params.titulo
+        let song = playlists.filter(x => x.nombre == name).at(0)
+        if(song != null)
+        {
+        let cancion = song.canciones.filter(x => x.titulo == titulo).at(0)
+            if(cancion != null)
+            {
+                cancion.Artista = pedido.body.Artista
+                cancion.Album = pedido.body.Album
+                cancion.año = pedido.body.año
+                respuesta.send(cancion)
             }
-            else respuesta.status(404, "No Found").send()
+            else
+            {
+                respuesta.status(404).send()
+            }
+            
         }
-        else respuesta.status(404, "No Found").send()
-        respuesta.send()
+        else
+        {
+            respuesta.status(404),send()
+        }
+        })
 
-    })
-    
-
-
-
+        app.delete('/playlists/:nombre/canciones/:titulo', (pedido, respuesta) => {
+            let name = pedido.params.nombre
+            let titulo = pedido.params.titulo
+            let song = playlists.filter(x => x.nombre == name).at(0)
+            if(song != null)
+            {
+            let cancion = song.canciones.filter(x => x.titulo == titulo).at(0)
+                if(cancion != null)
+                {
+                    let indice = playlists.indexOf(song)
+                    var indices = 0
+                    playlists[indice].canciones.forEach((Element,i) =>
+                    {
+                        if(Element.titulo == titulo)
+                        indices = i
+                    })
+                    playlist[indice].canciones.splice(indices,1)
+                    respuesta.send()
+                }
+                else
+                {
+                    respuesta.status(404).send()
+                }
+                
+            }
+            else
+            {
+                respuesta.status(404),send()
+            }
+            })
 
 
 })
