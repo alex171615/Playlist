@@ -1,13 +1,11 @@
-const { request } = require('express')
-const express = require('express')
-const { send } = require('express/lib/response')
-const res = require('express/lib/response')
+//importa dependencia de la biblioteca express
+import express, { json } from 'express'
 
 //crea la aplicacion 
 const app = express()
 
 //lee el body en formato json
-app.use(express.json())
+app.use(json())
 
 //define un puerto en que va a escuchar reqs
 const port = 3000
