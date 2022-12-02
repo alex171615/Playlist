@@ -1,8 +1,6 @@
-import express from 'express'
-import playlist from '../models/playlist.models'
+import {Router} from 'express'
 
-const router = express.Router()
-
+const router = Router()
 import {LeerPLaylists, LeerPorNombre, CrearPlaylists, 
     ActualizarPlaylists, BorrarPlaylists, LeerCanciones,
     LeerPorTitulo, CrearCancion, ActualizarCancion, 
