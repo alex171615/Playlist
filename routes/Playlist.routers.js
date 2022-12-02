@@ -3,6 +3,7 @@ import playlist from '../models/playlist.models'
 
 const router = express.Router()
 
+/*
 var playlist = [
     {
         "nombre": "rock",
@@ -22,7 +23,7 @@ var playlist = [
             }
         ]
 
-    }]
+    }]*/
 //endpoints
 router.get('/lists',(req, res) => {
     res.send(playlist)
