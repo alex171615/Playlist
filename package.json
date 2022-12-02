@@ -26,6 +26,8 @@
     "@babel/cli": "^7.19.3",
     "@babel/core": "^7.20.5",
     "@babel/node": "^7.20.5",
-    "@babel/preset-env": "^7.20.2"
+    "@babel/preset-env": "^7.20.2",
+    "dotenv": "^16.0.3",
+    "morgan": "^1.10.0"
   }
 }

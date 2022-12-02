@@ -1,14 +1,15 @@
 //importa dependencia de la biblioteca express
 import express, { json } from 'express'
+import morgan from 'morgan'
+import 'dotenv/config'
 
-//crea la aplicacion 
+
 const app = express()
+const port = process.env.PORT
 
-//lee el body en formato json
 app.use(json())
-
-//define un puerto en que va a escuchar reqs
-const port = 3000
+app.use(morgan('dev'))
+app.use(json())
 
 var playlist = [
     {
