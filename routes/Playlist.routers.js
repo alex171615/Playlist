@@ -1,4 +1,5 @@
 import express from 'express'
+import playlist from '../models/playlist.models'
 
 const router = express.Router()
 
@@ -23,12 +24,12 @@ var playlist = [
 
     }]
 //endpoints
-router.get('/lists', (req, res) => {
+router.get('/lists',(req, res) => {
     res.send(playlist)
 })
-router.get('/lists/:nombre', (req, res) => {
+router.get('/lists/:nombre', async (req, res) => {
     let nombre = req.params.nombre
-    let resultado = playlist.find(x => x.nombre == nombre)
+    let resultado = await playlist.find(x => x.nombre == nombre)
     if (resultado.playlist != 1) {
         res.status(404).send(resultado)
         return
@@ -46,12 +47,12 @@ router.post('/lists', (req, res) => {
         res.status(400).send("Insertar nombre")
 })
 
-router.put('/lists/:nombre', (req, res) => {
+router.put('/lists/:nombre',async (req, res) => {
     let nombre = req.params.nombre
     if (nombre != req.body.nombre) {
         res.status(409).send()
     }
-    let playlists = playlist.find(x => x.nombre == nombre).at(0)
+    let playlists = await playlist.find(x => x.nombre == nombre).at(0)
     if (playlists != null) {
         playlists.descripcion = req.body.descripcion
         res.status(204).send(playlists)
@@ -61,9 +62,9 @@ router.put('/lists/:nombre', (req, res) => {
 })
 
 
-router.delete('/lists/:nombre', (req, res) => {
+router.delete('/lists/:nombre', async(req, res) => {
     let nombre = req.params.nombre
-    let listaAEliminar = playlist.find(x => x.nombre == nombre).at(0)
+    let listaAEliminar = await playlist.find(x => x.nombre == nombre).at(0)
     if (listaAEliminar == null) {
         res.status(404).send("No se encuentra la lista de reproducción")
     }
@@ -83,9 +84,9 @@ router.delete('/lists/:nombre', (req, res) => {
 
 //2
 
-router.get('/lists/:nombre/canciones', (req, res) => {
+router.get('/lists/:nombre/canciones',async (req, res) => {
     let nombre = req.params.nombre
-    let cancioneslistas = playlist.find(x => x.nombre == nombre).at(0)
+    let cancioneslistas = await playlist.find(x => x.nombre == nombre).at(0)
     let cancioneslistasq = playlist.some(x => x.nombre == nombre)
     if (cancioneslistasq == true) {
         var a = cancioneslistas.canciones
@@ -97,9 +98,9 @@ router.get('/lists/:nombre/canciones', (req, res) => {
     }
 })
 
-router.post('/lists/:nombre/canciones', (req, res) => {
+router.post('/lists/:nombre/canciones', async (req, res) => {
     let nombre = req.params.nombre
-    let listaCanciones = playlist.find(x => x.nombre == nombre).at(0)
+    let listaCanciones = await playlist.find(x => x.nombre == nombre).at(0)
     if (listaCanciones != null) {
         if(req.body.titulo != null){
             
@@ -119,10 +120,10 @@ router.post('/lists/:nombre/canciones', (req, res) => {
     }
 
 
-    router.put('/playlists/:nombre/canciones/:titulo', (req, res) => {
+    router.put('/playlists/:nombre/canciones/:titulo', async (req, res) => {
         let name = req.params.nombre
         let titulo = req.params.titulo
-        let song = playlist.find(x => x.nombre == name).at(0)
+        let song = await playlist.find(x => x.nombre == name).at(0)
         if(song != null)
         {
         let cancion = song.canciones.find(x => x.titulo == titulo).at(0)
@@ -145,10 +146,10 @@ router.post('/lists/:nombre/canciones', (req, res) => {
         }
         })
 
-        router.delete('/playlists/:nombre/canciones/:titulo', (req, res) => {
+        router.delete('/playlists/:nombre/canciones/:titulo', async(req, res) => {
             let name = req.params.nombre
             let titulo = req.params.titulo
-            let song = playlist.find(x => x.nombre == name).at(0)
+            let song = await playlist.find(x => x.nombre == name).at(0)
             if(song != null)
             {
             let cancion = song.canciones.find(x => x.titulo == titulo).at(0)
